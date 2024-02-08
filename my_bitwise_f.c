@@ -33,7 +33,9 @@ int my_has_odd_number_of_bits_set(int n) {
 /* Turn k bit of n off
  * Only use: &, ~ and <<
  */
-int my_turn_k_bit_off(const int n, const short k) { return n & ~(1 << (k - 1)); }
+int my_turn_k_bit_off(const int n, const short k) {
+  return n & ~(1 << (k - 1));
+}
 
 /* Return true if the k bit of n is on. False otherwise.
  * Only use: & and <<
@@ -68,8 +70,8 @@ short my_copy_reverse_bits(short n) {
   short reverse = 0;
 
   while (n) {
-    short pos = ((short) log2(n & -n)) + 1;
-    reverse |= (1 << (sizeof(n) * 8 - ((unsigned long) pos)));
+    short pos = ((short)log2(n & -n)) + 1;
+    reverse |= (1 << (sizeof(n) * 8 - ((unsigned long)pos)));
     n &= (n - 1);
   }
 
@@ -101,7 +103,7 @@ void my_print_number(const unsigned char number, const reflection_t refl) {
   for (unsigned char row = 0; row < NROWS; ++row) {
     rowBits = my_font_12x8[number][__get_i_row(refl, NROWS, row)];
     for (unsigned char col = 0; col < NCOLS; ++col) {
-      colMask = ((unsigned char) (1 << __calculate_shifts(refl, NCOLS, col)));
+      colMask = ((unsigned char)(1 << __calculate_shifts(refl, NCOLS, col)));
       putchar((rowBits & colMask) ? '*' : ' ');
     }
     putchar('\n');
