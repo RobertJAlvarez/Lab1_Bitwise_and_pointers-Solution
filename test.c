@@ -1,12 +1,12 @@
-#include <errno.h>  //errno
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>     //strncpy()
-#include <sys/mman.h>   //mmap()
-#include <sys/types.h>  //fork()  waitpid()
-#include <sys/wait.h>   //waitpid()
-#include <time.h>
-#include <unistd.h>  //fork()
+#include <errno.h>     //errno
+#include <stdio.h>     //printf() fprintf()
+#include <stdlib.h>    //rand()
+#include <string.h>    //strcpy()
+#include <sys/mman.h>  //mmap() munmap()
+// #include <sys/types.h>  //time()
+#include <sys/wait.h>  //wait()
+#include <time.h>      //time()
+#include <unistd.h>    //fork()
 
 #include "DoubleLL.h"
 #include "bitwise_f.h"
@@ -135,7 +135,9 @@ double test_is_palindrome(void) {
   for (size_t i = 0; i < N_TESTS; i++) {
     n1 = n2 = rand();
 
-    passed += (my_is_palindrome(n1) == is_palindrome(n2));
+    if ((my_is_palindrome(n1) == is_palindrome(n2)) ||
+        (my_is_palindrome2(n1) == is_palindrome(n2)))
+      passed++;
   }
 
   return points * ((double)passed) / ((double)N_TESTS);

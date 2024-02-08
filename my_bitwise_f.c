@@ -51,6 +51,19 @@ int my_toggle_k_bit(const int n, const short k) { return n ^ (1 << (k - 1)); }
 /* Return 1 if the bit of n are palindrome
  * Only use: <<, |, & and >>
  */
+int my_is_palindrome2(const int n) {
+  int rev = 0;
+  int k = n;
+  unsigned int n_bits = sizeof(n) * 8 - 1;
+
+  for (unsigned int i = 0; i < n_bits; i++) {
+    rev = (rev << 1) | (k & 1);
+    k >>= 1;
+  }
+
+  return n == rev;
+}
+
 int my_is_palindrome(const int n) {
   int rev = 0;
   int k = n;

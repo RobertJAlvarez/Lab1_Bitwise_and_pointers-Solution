@@ -37,6 +37,7 @@ int my_toggle_k_bit(const int n, const short k);
  * Only use: <<, |, & and >>
  */
 int my_is_palindrome(const int n);
+int my_is_palindrome2(const int n);
 
 /* [15 points] Return an int that have the same bits of n but in reverse.
  * Only use: &, | and <<
