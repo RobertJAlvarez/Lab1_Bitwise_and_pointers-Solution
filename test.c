@@ -221,7 +221,9 @@ double test_is_unique(void) {
 
 /* 20 points */
 double test_print_number(void) {
+  unsigned char possible_nums[] = {1, 2, 4, 5, 6, 7, 9};
   unsigned char num;
+  int n_nums;
 
   printf("-------------------------\n");
   printf(
@@ -229,7 +231,12 @@ double test_print_number(void) {
       "different reflections. First my implementation and then the student "
       "implementation. Grade is given if they are visually identical.\n");
 
-  num = ((unsigned char)(rand() % 10));
+  n_nums = sizeof(possible_nums) / sizeof(possible_nums[0]);
+  printf("n_nums = %d\n", n_nums);
+
+  for (size_t i = 0; i < 3; i++) rand();
+
+  num = ((unsigned char)possible_nums[rand() % n_nums]);
 
   printf("My number %d with NO reflection:\n", num);
   my_print_number(num, my_NO);
@@ -293,9 +300,7 @@ double test_insert_node(void) {
     if ((n_nodes[i] = create_node(rand())) == NULL) {
       error_no_memory();
 
-      for (size_t j = ((size_t)0); j < i - 1; j++) {
-        free(n_nodes[j]);
-      }
+      for (size_t j = ((size_t)0); j < i - 1; j++) free(n_nodes[j]);
       free(s_LL);
 
       return 0.0;
@@ -315,9 +320,7 @@ double test_insert_node(void) {
   printf("The actual student LL is:\n");
   print_LL(s_LL, ASC);
 
-  for (size_t j = ((size_t)0); j < ADD_N; j++) {
-    free(n_nodes[j]);
-  }
+  for (size_t j = ((size_t)0); j < ADD_N; j++) free(n_nodes[j]);
   free(s_LL);
 
   return 0.0;
