@@ -14,6 +14,10 @@ typedef struct {
   my_node_t *tail;
 } my_list_t;
 
+my_node_t *__XOR(const void *x, const void *y);
+
+void my_free_LL(my_list_t *LL);
+
 /* Helper function to print every value in list nodes on a
  * forward traversal.
  */

@@ -5,8 +5,21 @@
 #include "my_DoubleLL.h"
 
 // Helper function to return __XOR of `x` and `y`
-static my_node_t *__XOR(const void *x, const void *y) {
+my_node_t *__XOR(const void *x, const void *y) {
   return (my_node_t *)(((uintptr_t)x) ^ ((uintptr_t)y));
+}
+
+void my_free_LL(my_list_t *LL) {
+  my_node_t *curr = LL->head;
+  my_node_t *prev = NULL;
+  my_node_t *next;
+
+  while (curr != NULL) {
+    next = __XOR(prev, curr->link);
+    prev = curr;
+    free(curr);
+    curr = next;
+  }
 }
 
 void my_print_LL(const my_list_t *LL, const my_order_t order) {

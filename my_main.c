@@ -8,6 +8,7 @@ int main(void) {
   // Double linked list
   int keys[] = {1, 2, 3, 4, 5};
   int n = sizeof(keys) / sizeof(keys[0]);
+
   my_list_t *LL = (my_list_t *)malloc(sizeof(my_list_t));
 
   for (int i = n - 1; i >= 0; i--) my_push(LL, keys[i]);
@@ -17,6 +18,9 @@ int main(void) {
 
   printf("Descending...\n");
   my_print_LL(LL, my_DESC);
+
+  my_free_LL(LL);
+  free(LL);
 
   // Print numbers
   for (unsigned char number = 0; number <= 9; ++number) {
