@@ -13,6 +13,7 @@
 #include "my_bitwise_f.h"
 
 #define N_TESTS ((size_t)1000)
+#define MAX_DATA (256)
 
 static void error_no_memory(void) {
   fprintf(stderr, "No more memory available.\n");
@@ -261,12 +262,12 @@ double test_print_number(void) {
   return 0.0;
 }
 
-static node_t *create_node(const int data) {
+static node_t *create_node(void) {
   node_t *newNode = (node_t *)malloc(sizeof(node_t));
 
   if (newNode == NULL) return NULL;
 
-  newNode->data = data;
+  newNode->data = rand() % MAX_DATA;
   newNode->link = NULL;
 
   return newNode;
@@ -286,42 +287,48 @@ static int _init_s_LL(list_t **s_LL) {
 
 double test_insert_node(void) {
   const size_t ADD_N = 5;
-  node_t *n_nodes[ADD_N];
+  node_t *t_node;
 
+  my_list_t *my_LL = NULL;
   list_t *s_LL = NULL;
 
   printf("-------------------------\n");
   printf("Function %s()\n", __func__);
 
   if (_init_s_LL(&s_LL)) return 0.0;
+  if ((my_LL = (my_list_t *)malloc(sizeof(my_list_t))) == NULL) {
+    error_no_memory();
+    free(s_LL);
+    return 0.0;
+  }
 
   // Test with ADD_N nodes
   for (size_t i = ((size_t)0); i < ADD_N; i++) {
-    if ((n_nodes[i] = create_node(rand())) == NULL) {
+    if ((t_node = create_node()) == NULL) {
       error_no_memory();
 
-      for (size_t j = ((size_t)0); j < i - 1; j++) free(n_nodes[j]);
+      my_free_LL(my_LL);
+      free(my_LL);
       free(s_LL);
 
       return 0.0;
     }
 
     // Get data for node
-    insert_node(s_LL, n_nodes[i]);
+    insert_node(s_LL, t_node);
+    my_insert_node(my_LL, (my_node_t *)t_node);
   }
 
-  // Print nodes that were supposed to be  added to LL
-  printf("The following %zu nodes supposed to had been added to the LL.\n",
-         ADD_N);
-  for (size_t i = ((size_t)0); i < ADD_N; i++) {
-    printf("Node with address %p and data %d.\n", n_nodes[i], n_nodes[i]->data);
-  }
+  printf("\nAfter adding %zu nodes, the LL suppose to look like:\n", ADD_N);
+  my_print_LL(my_LL, my_ASC);
 
-  printf("The actual student LL is:\n");
+  printf("\nThe student LL is:\n");
   print_LL(s_LL, ASC);
+  printf("\n");
 
-  for (size_t j = ((size_t)0); j < ADD_N; j++) free(n_nodes[j]);
+  my_free_LL(my_LL);
   free(s_LL);
+  free(my_LL);
 
   return 0.0;
 }
@@ -349,29 +356,31 @@ double test_remove_node(void) {
   if (_init_s_LL(&s_LL)) return 0.0;
 
   for (size_t i = ((size_t)0); i < ADD_N; i++) {
-    if (push(s_LL, rand())) {
+    if (push(s_LL, rand() % MAX_DATA)) {
       printf("PUSH FAIL. Grade remove_node by hand.\n");
       return 0.0;
     }
   }
 
-  printf("The following list was created:\n");
+  printf("\nThe following list was created:\n");
   print_LL(s_LL, ASC);
 
-  printf("Calling remove_node for half the nodes in LL...\n");
+  printf("\nCalling remove_node for half the nodes in LL...\n");
   for (size_t i = ((size_t)0); i < ADD_N / 2; i++) {
     remove_node(s_LL, ((unsigned long)(i % 2 ? s_LL->head : s_LL->tail)));
   }
 
-  printf("LL after deleting half the list:\n");
+  printf("\nLL after deleting half the list:\n");
   print_LL(s_LL, ASC);
+  printf("\n");
 
   for (size_t i = ((size_t)ADD_N / 2); i < ADD_N; i++) {
     remove_node(s_LL, (unsigned long)s_LL->head);
   }
 
-  printf("Final LL after removing all nodes:\n");
+  printf("\nFinal LL after removing all nodes:\n");
   print_LL(s_LL, ASC);
+  printf("\n");
 
   // Free all nodes just in case that the student didn't implement remove_node
   _free_s_LL(s_LL);
