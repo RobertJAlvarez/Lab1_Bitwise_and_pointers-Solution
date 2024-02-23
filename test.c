@@ -189,7 +189,6 @@ static char *randstring(size_t length) {
 double test_is_unique(void) {
   size_t passed = 0;
   const double points = 15.;
-  // const int n_tests = 100;
 
   char *s1, *s2;
   size_t len;
@@ -198,7 +197,7 @@ double test_is_unique(void) {
   printf("Function %s() ", __func__);
 
   for (size_t i = 0; i < N_TESTS; i++) {
-    len = 1 + ((size_t)(rand() % 30));  // 92 possible characters
+    len = 1 + ((size_t)(rand() % 30));
     if ((s1 = randstring(len)) == NULL) {
       error_no_memory();
       continue;
