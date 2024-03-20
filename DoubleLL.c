@@ -2,17 +2,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "my_DoubleLL.h"
+#include "DoubleLL.h"
 
 // Helper function to return __XOR of `x` and `y`
-my_node_t *__XOR(const void *x, const void *y) {
-  return (my_node_t *)(((uintptr_t)x) ^ ((uintptr_t)y));
+node_t *__XOR(const void *x, const void *y) {
+  return (node_t *)(((uintptr_t)x) ^ ((uintptr_t)y));
 }
 
-void my_free_LL(my_list_t *LL) {
-  my_node_t *curr = LL->head;
-  my_node_t *prev = NULL;
-  my_node_t *next;
+void free_LL(list_t *LL) {
+  node_t *curr = LL->head;
+  node_t *prev = NULL;
+  node_t *next;
 
   while (curr != NULL) {
     next = __XOR(prev, curr->link);
@@ -22,12 +22,12 @@ void my_free_LL(my_list_t *LL) {
   }
 }
 
-void my_print_LL(const my_list_t *LL, const my_order_t order) {
+void print_LL(const list_t *LL, const order_t order) {
   if (LL == NULL) return;
 
-  my_node_t *curr = order == my_ASC ? LL->head : LL->tail;
-  my_node_t *prev = NULL;
-  my_node_t *next;
+  node_t *curr = order == ASC ? LL->head : LL->tail;
+  node_t *prev = NULL;
+  node_t *next;
 
   while (curr != NULL) {
     printf("%d —> ", curr->data);
@@ -45,7 +45,7 @@ void my_print_LL(const my_list_t *LL, const my_order_t order) {
   printf("NULL\n");
 }
 
-static void __push_node(my_list_t *LL, my_node_t *new_node) {
+static void __push_node(list_t *LL, node_t *new_node) {
   if (LL->head != NULL)
     // Update head->link value of the current head
     //  node if the linked list is not empty
@@ -59,13 +59,13 @@ static void __push_node(my_list_t *LL, my_node_t *new_node) {
   LL->head = new_node;
 }
 
-void my_push(my_list_t *LL, const int data) {
+void push(list_t *LL, const int data) {
   if (LL == NULL) return;
 
-  my_node_t *head = LL->head;
+  node_t *head = LL->head;
 
   // allocate a new list node and set its data
-  my_node_t *newNode = (my_node_t *)malloc(sizeof(my_node_t));
+  node_t *newNode = (node_t *)malloc(sizeof(node_t));
   newNode->data = data;
 
   // The link field of the new node is __XOR of the current
@@ -76,7 +76,7 @@ void my_push(my_list_t *LL, const int data) {
   __push_node(LL, newNode);
 }
 
-void my_insert_node(my_list_t *LL, my_node_t *new_node) {
+void insert_node(list_t *LL, node_t *new_node) {
   if (LL == NULL) return;
 
   // If new_node is the first node in LL or if new_node
@@ -97,9 +97,9 @@ void my_insert_node(my_list_t *LL, my_node_t *new_node) {
 
   // Iterate until we find the last node in LL with
   //  lower address than new_node
-  my_node_t *curr = LL->head;
-  my_node_t *prev = NULL;
-  my_node_t *next;
+  node_t *curr = LL->head;
+  node_t *prev = NULL;
+  node_t *next;
 
   do {
     next = __XOR(prev, curr->link);
@@ -113,15 +113,15 @@ void my_insert_node(my_list_t *LL, my_node_t *new_node) {
   new_node->link = __XOR(prev, next);
 }
 
-void my_remove_node(my_list_t *LL, unsigned long remove_node) {
+void remove_node(list_t *LL, unsigned long remove_node) {
   if (LL == NULL) return;
 
-  my_node_t *free_node = (my_node_t *)remove_node;
+  node_t *free_node = (node_t *)remove_node;
 
   // If the node to free is head or tail, update LL head or
   //  tail pointer
   if (LL->head == free_node || LL->tail == free_node) {
-    my_node_t **update = LL->head == free_node ? &(LL->head) : &(LL->tail);
+    node_t **update = LL->head == free_node ? &(LL->head) : &(LL->tail);
 
     // Update what head or tail is pointing to
     *update = free_node->link;
@@ -131,9 +131,9 @@ void my_remove_node(my_list_t *LL, unsigned long remove_node) {
   // Node is not in head nor tail, so iterate list and update
   //  node links
   else {
-    my_node_t *curr = LL->head;
-    my_node_t *prev = NULL;
-    my_node_t *next;
+    node_t *curr = LL->head;
+    node_t *prev = NULL;
+    node_t *next;
 
     // Find the node pointing to remove_node
     do {
